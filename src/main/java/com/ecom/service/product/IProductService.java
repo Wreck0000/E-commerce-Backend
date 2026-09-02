@@ -1,11 +1,12 @@
 package com.ecom.service.product;
 
 import com.ecom.Model.Product;
+import com.ecom.request.addProductRequest;
 
 import java.util.List;
 
 public interface IProductService {
-    Product addproduct(Product product);
+    Product addproduct(addProductRequest product);
 
     Product getProductById(Long id);
     void deleteProductById(Long id);
