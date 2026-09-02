@@ -1,8 +1,10 @@
 package com.ecom.service.product;
 
+import com.ecom.Model.Category;
 import com.ecom.Model.Product;
 import com.ecom.exceptions.ProductNotFoundException;
 import com.ecom.repository.ProductRepository;
+import com.ecom.request.addProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +16,15 @@ public class ProductService implements IProductService {
 
     private final ProductRepository productRepository;
     @Override
-    public Product addproduct(Product product) {
+    public Product addproduct(addProductRequest product) {
         return null;
+    }
+    private Product createProduct(addProductRequest request, Category category) {
+
     }
     @Override
     public Product getProductById(Long id) {
-        return productRepository.findById(id).orElseThrow(()->new ProductNotFoundException("Product Not Found"));
+        return productRepository.findById(id).orElseThrow(()->new ProductNotFoundException("Product not found"));
     }
     @Override
     public void deleteProductById(Long id) {
