@@ -1,13 +1,10 @@
 package com.ecom.request;
-
 import com.ecom.Model.Category;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.math.BigDecimal;
-@Entity
 @Data
-public class addProductRequest {
+public class AddProductRequest {
         private Long id;
         private String name;
         private String brand;

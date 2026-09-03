@@ -8,7 +8,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +15,8 @@ public class Category {
     private String name;
     @OneToMany(mappedBy = "category")
     private List<Product> products;
-
+    public Category(String name){
+        this.name = name;
+    }
 
 }
