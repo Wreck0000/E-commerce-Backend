@@ -21,26 +21,25 @@ public class ProductService implements IProductService {
     private final CategoryRepository categoryRepository;
     @Override
     public Product addproduct(AddProductRequest request) {
-        Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
-                .orElseGet(()->{
-                    Category newCategory = new Category(request.getCategory().getName());
-                    return  categoryRepository.save(newCategory);
-                });
-        request.setCategory(category);
-        return productRepository.save(createProduct(request,category));
+        // 1. Find category
+        Category category = categoryRepository.findByName(request.getCategory().getName());
 
-    }
-
-
-    private Product createProduct(AddProductRequest request, Category category) {
-        return new Product(
-            request.getName(),
-            request.getBrand(),
-            request.getPrice(),
-            request.getInventory(),
-            request.getDescription(),
-            category
-        );
+        // 2. If category doesn't exist, create it
+        if (category == null) {
+            category = new Category(request.getCategory().getName());
+            category = categoryRepository.save(category);
+        }
+        // 3. Create product
+        Product product = new Product();
+        product.setName(request.getName());
+        product.setBrand(request.getBrand());
+        product.setPrice(request.getPrice());
+        product.setInventory(request.getInventory());
+        product.setDescription(request.getDescription());
+        // 4. Connect product to category
+        product.setCategory(category);
+        // 5. Save product
+        return productRepository.save(product);
     }
     @Override
     public Product getProductById(Long id) {
@@ -53,20 +52,15 @@ public class ProductService implements IProductService {
     }
     @Override
     public Product updateProduct(ProductUpdateRequest request, Long productId) {
-        return productRepository.findById(productId)
-                .map(existingProduct -> updateExistingProduct(existingProduct, request))
-                .map(productRepository::save)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
-    }
-    private Product updateExistingProduct(Product existingProduct, ProductUpdateRequest request) {
+        Product existingProduct = productRepository.findById(productId).orElseThrow(()->new ProductNotFoundException("Product not found"));
         existingProduct.setName(request.getName());
         existingProduct.setBrand(request.getBrand());
         existingProduct.setPrice(request.getPrice());
         existingProduct.setInventory(request.getInventory());
         existingProduct.setDescription(request.getDescription());
-        Category category = new Category(request.getCategory().getName());
+        Category category = categoryRepository.findByName(request.getCategory().getName());
         existingProduct.setCategory(category);
-        return existingProduct;
+        return productRepository.save(existingProduct);
     }
 
     @Override
