@@ -1,15 +1,17 @@
 package com.ecom.request;
-import com.ecom.Model.Category;
-import jakarta.persistence.*;
-import lombok.*;
+
+import com.ecom.model.Category;
+import lombok.Data;
+
 import java.math.BigDecimal;
+
 @Data
 public class AddProductRequest {
-        private Long id;
-        private String name;
-        private String brand;
-        private BigDecimal price;
-        private int inventory;
-        private String description;
-        private Category category;
+    private Long id;
+    private String name;
+    private String brand;
+    private BigDecimal price;
+    private int inventory;
+    private String description;
+    private Category category;
 }

@@ -1,10 +1,10 @@
-package com.ecom.service.category;
+package com.ecom.service;
 
-import com.ecom.Model.Category;
+import com.ecom.model.Category;
 
 import java.util.List;
 
-public interface IcategoryService {
+public interface ICategoryService {
     Category getCategoryById(Long id);
     Category getCategoryByName(String name);
     List<Category> getAllCategories();

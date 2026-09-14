@@ -1,10 +1,7 @@
 package com.ecom.dto;
 
-import com.ecom.Model.Image;
-import lombok.AllArgsConstructor;
+import com.ecom.model.Image;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Data
 public class ImageDto {
