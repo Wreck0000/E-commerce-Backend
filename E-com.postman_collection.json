@@ -1,0 +1,513 @@
+{
+	"info": {
+		"_postman_id": "ecom-api-collection",
+		"name": "E-Commerce API",
+		"description": "Postman Collection for E-Commerce Spring Boot API endpoints.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:9090/api/v1",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get All Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"all"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Product By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/product/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"product",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Product By Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/by/name/Phone",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"by",
+								"name",
+								"Phone"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Product By Brand",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/by/brand?brand=Apple",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"by",
+								"brand"
+							],
+							"query": [
+								{
+									"key": "brand",
+									"value": "Apple"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Products By Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/by/category/Electronics",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"by",
+								"category",
+								"Electronics"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Products By Category and Brand",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/by/category-and-brand?category=Electronics&brand=Apple",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"by",
+								"category-and-brand"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Electronics"
+								},
+								{
+									"key": "brand",
+									"value": "Apple"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Products By Brand and Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/by/brand-and-name?brand=Apple&name=iPhone",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"by",
+								"brand-and-name"
+							],
+							"query": [
+								{
+									"key": "brand",
+									"value": "Apple"
+								},
+								{
+									"key": "name",
+									"value": "iPhone"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Add Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"iPhone 15 Pro\",\n  \"brand\": \"Apple\",\n  \"price\": 999.99,\n  \"inventory\": 50,\n  \"description\": \"Latest Apple flagship smartphone\",\n  \"category\": {\n    \"name\": \"Electronics\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"add"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"iPhone 15 Pro Max\",\n  \"brand\": \"Apple\",\n  \"price\": 1199.99,\n  \"inventory\": 30,\n  \"description\": \"Updated flagship smartphone\",\n  \"category\": {\n    \"name\": \"Electronics\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products/product/1/update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"product",
+								"1",
+								"update"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/product/1/delete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"product",
+								"1",
+								"delete"
+							]
+						}
+					}
+				},
+				{
+					"name": "Count Products By Brand and Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/count/by-brand/and-name?brand=Apple&name=iPhone",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"count",
+								"by-brand",
+								"and-name"
+							],
+							"query": [
+								{
+									"key": "brand",
+									"value": "Apple"
+								},
+								{
+									"key": "name",
+									"value": "iPhone"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories",
+								"all"
+							]
+						}
+					}
+				},
+				{
+					"name": "Add Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Electronics\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/categories/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories",
+								"add"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Category By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories/category/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories",
+								"category",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Category By Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories/category/by-name/Electronics",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories",
+								"category",
+								"by-name",
+								"Electronics"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Smart Electronics\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/categories/category/1/update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories",
+								"category",
+								"1",
+								"update"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories/category/1/delete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories",
+								"category",
+								"1",
+								"delete"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Images",
+			"item": [
+				{
+					"name": "Upload Images",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "productId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/images/upload",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"images",
+								"upload"
+							]
+						}
+					}
+				},
+				{
+					"name": "Download Image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/images/image/download/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"images",
+								"image",
+								"download",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Image",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/images/image/1/update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"images",
+								"image",
+								"1",
+								"update"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Image",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/images/image/1/delete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"images",
+								"image",
+								"1",
+								"delete"
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}

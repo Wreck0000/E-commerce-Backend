@@ -1,9 +1,10 @@
-package com.ecom.service.category;
+package com.ecom.service.impl;
 
-import com.ecom.Model.Category;
-import com.ecom.exceptions.AlreadyExistsException;
-import com.ecom.exceptions.ResourceNotFoundException;
+import com.ecom.exception.AlreadyExistsException;
+import com.ecom.exception.ResourceNotFoundException;
+import com.ecom.model.Category;
 import com.ecom.repository.CategoryRepository;
+import com.ecom.service.ICategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class categoryService implements IcategoryService {
+public class CategoryServiceImpl implements ICategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
@@ -21,7 +22,11 @@ public class categoryService implements IcategoryService {
 
     @Override
     public Category getCategoryByName(String name) {
-        return categoryRepository.findByName(name);
+        Category category = categoryRepository.findByName(name);
+        if (category == null) {
+            throw new ResourceNotFoundException("Category not found");
+        }
+        return category;
     }
 
     @Override

@@ -1,9 +1,10 @@
 package com.ecom.request;
 
-import com.ecom.Model.Category;
+import com.ecom.model.Category;
 import lombok.Data;
 
 import java.math.BigDecimal;
+
 @Data
 public class ProductUpdateRequest {
     private Long id;

@@ -1,13 +1,15 @@
-package com.ecom.service.image;
+package com.ecom.service.impl;
 
-import com.ecom.Model.Image;
-import com.ecom.Model.Product;
 import com.ecom.dto.ImageDto;
-import com.ecom.exceptions.ResourceNotFoundException;
+import com.ecom.exception.ResourceNotFoundException;
+import com.ecom.model.Image;
+import com.ecom.model.Product;
 import com.ecom.repository.ImageRepository;
-import com.ecom.service.product.IProductService;
+import com.ecom.service.IImageService;
+import com.ecom.service.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -18,12 +20,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ImageService implements IimageService {
+public class ImageServiceImpl implements IImageService {
 
     private final IProductService productService;
     private final ImageRepository imageRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public Image getImageById(Long id) {
         return imageRepository.findById(id)
                 .orElseThrow(() ->
@@ -31,6 +34,21 @@ public class ImageService implements IimageService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public byte[] getImageBytes(Long id) {
+        Image image = getImageById(id);
+        if (image.getImage() == null) {
+            return new byte[0];
+        }
+        try {
+            return image.getImage().getBytes(1, (int) image.getImage().length());
+        } catch (SQLException e) {
+            throw new IllegalStateException("Unable to read image bytes for id: " + id, e);
+        }
+    }
+
+    @Override
+    @Transactional
     public void deleteImageById(Long id) {
         imageRepository.findById(id).ifPresentOrElse(
                 imageRepository::delete,
@@ -39,6 +57,7 @@ public class ImageService implements IimageService {
     }
 
     @Override
+    @Transactional
     public List<ImageDto> saveImage(List<MultipartFile> files, Long productId) {
         if (files == null || files.isEmpty()) {
             throw new IllegalArgumentException("At least one image file is required");
@@ -73,6 +92,7 @@ public class ImageService implements IimageService {
     }
 
     @Override
+    @Transactional
     public void updateImage(MultipartFile file, Long imageId) {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("Image file cannot be empty");
