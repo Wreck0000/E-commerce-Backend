@@ -1,9 +1,13 @@
 package com.ecom.dto;
 
 import com.ecom.model.Image;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ImageDto {
     private Long id;
     private String filename;
@@ -11,9 +15,11 @@ public class ImageDto {
     private String url;
 
     public ImageDto(Image image) {
-        this.id = image.getId();
-        this.filename = image.getFilename();
-        this.filetype = image.getFiletype();
-        this.url = image.getUrl();
+        if (image != null) {
+            this.id = image.getId();
+            this.filename = image.getFilename();
+            this.filetype = image.getFiletype();
+            this.url = image.getUrl();
+        }
     }
 }

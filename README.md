@@ -1,55 +1,52 @@
 # E-Com
 
-E-Com is a Spring Boot REST API for an e-commerce application. The project currently
-contains the product domain model, JPA relationships, repository queries, and the
-initial product service layer.
+E-Com is a Spring Boot REST API for an e-commerce application. The project contains the product domain model, shopping cart models, JPA relationships, repository queries, DTO mapping layers, and REST controller endpoints.
 
-## Current Features
+## Features
 
-- Product, category, and image entities
-- JPA mappings between products, categories, and images
-- PostgreSQL persistence through Spring Data JPA
-- Product lookup by ID, name, brand, and category
-- Product deletion with a not-found exception
-- Lombok-powered getters, setters, and constructors
+- **Product Management**: Full CRUD operations, product lookup by ID, name, brand, category, brand & category, brand & name.
+- **DTO Layer**: ModelMapper-backed `ProductDto` and `ImageDto` data transfer object serialization preventing JSON recursion loops.
+- **Cart & CartItem Domain**: JPA entities mapping shopping carts to cart items with auto-calculated total pricing.
+- **Refactored Service Layer**: Java `Optional` functional pipelines for clean null-safe entity resolution and category lookup.
+- **PostgreSQL Persistence**: Spring Data JPA with Lombok boilerplate reduction.
 
 ## Technology Stack
 
-- Java 17
-- Spring Boot 4.1.1
-- Spring Web MVC
-- Spring Data JPA / Hibernate
-- PostgreSQL
-- Maven
-- Lombok
+- **Java**: 17
+- **Framework**: Spring Boot 4.1.1 (Spring Web, Spring Data JPA)
+- **Database**: PostgreSQL
+- **Mapping**: ModelMapper 3.2.4
+- **Utilities**: Lombok
+- **Build Tool**: Maven
 
 ## Project Structure
 
 ```text
 src/
-├── main/
-│   ├── java/com/ecom/
-│   │   ├── Model/              # JPA entities
-│   │   ├── exceptions/         # Domain exceptions
-│   │   ├── repository/         # Spring Data repositories
-│   │   ├── service/product/    # Product service contracts and logic
-│   │   └── EComApplication.java
-│   └── resources/
-│       └── application.properties
-└── test/
-    └── java/com/ecom/
+└── main/
+    ├── java/com/ecom/
+    │   ├── config/             # Spring configuration (ModelMapper Bean)
+    │   ├── controller/         # REST API endpoints (Product, Image, Category)
+    │   ├── dto/                # Data Transfer Objects (ProductDto, ImageDto)
+    │   ├── exception/          # Custom exceptions
+    │   ├── model/              # JPA entities (Product, Category, Image, Cart, CartItem)
+    │   ├── repository/         # Spring Data JPA repositories
+    │   ├── request/            # API request payload objects
+    │   ├── response/           # Standardized API response wrapper
+    │   └── service/            # Business logic contracts and implementations
+    └── resources/
+        └── application.properties
 ```
 
 ## Prerequisites
 
 - JDK 17 or newer
 - PostgreSQL
-- Maven, or the included Maven Wrapper
+- Maven (or included Maven Wrapper)
 
 ## Configuration
 
-Create a PostgreSQL database named `MyShop_Db`, then set the database password in
-the `DB_PASSWORD` environment variable. Optional variables are also available:
+Set up PostgreSQL database `MyShop_Db` and configure database environment variables:
 
 ```text
 DB_URL=jdbc:postgresql://localhost:5432/MyShop_Db
@@ -67,21 +64,10 @@ On Windows:
 .\mvnw.cmd spring-boot:run
 ```
 
-Run the test suite:
+Run test suite:
 
 ```powershell
 .\mvnw.cmd test
 ```
 
-The API will be available at `http://localhost:9090`.
-
-## Development Status
-
-This project is under active development. Product service and controller endpoints
-are being built incrementally; additional validation, API documentation, security,
-and testing will be added as development continues.
-
-## Security
-
-Never commit database passwords, API keys, or other secrets. Use environment
-variables or a local, ignored configuration file for development credentials.
+The API endpoints will be accessible under `http://localhost:9090/api/v1/...`.

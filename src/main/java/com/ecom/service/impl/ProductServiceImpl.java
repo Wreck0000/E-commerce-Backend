@@ -1,5 +1,7 @@
 package com.ecom.service.impl;
 
+import com.ecom.dto.ImageDto;
+import com.ecom.dto.ProductDto;
 import com.ecom.exception.ProductNotFoundException;
 import com.ecom.model.Category;
 import com.ecom.model.Product;
@@ -9,9 +11,11 @@ import com.ecom.request.AddProductRequest;
 import com.ecom.request.ProductUpdateRequest;
 import com.ecom.service.IProductService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,32 +23,34 @@ public class ProductServiceImpl implements IProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public Product addproduct(AddProductRequest request) {
-        Category category = null;
-        if (request.getCategory() != null && request.getCategory().getName() != null) {
-            category = categoryRepository.findByName(request.getCategory().getName());
-            if (category == null) {
-                category = new Category(request.getCategory().getName());
-                category = categoryRepository.save(category);
-            }
-        }
+        Category category = Optional.ofNullable(request.getCategory())
+                .map(Category::getName)
+                .map(this::getOrCreateCategory)
+                .orElse(null);
 
-        Product product = new Product();
-        product.setName(request.getName());
-        product.setBrand(request.getBrand());
-        product.setPrice(request.getPrice());
-        product.setInventory(request.getInventory());
-        product.setDescription(request.getDescription());
-        product.setCategory(category);
-
+        Product product = createProduct(request, category);
         return productRepository.save(product);
+    }
+
+    private Product createProduct(AddProductRequest request, Category category) {
+        return new Product(
+                request.getName(),
+                request.getBrand(),
+                request.getPrice(),
+                request.getInventory(),
+                request.getDescription(),
+                category
+        );
     }
 
     @Override
     public Product getProductById(Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
     }
 
     @Override
@@ -57,25 +63,30 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public Product updateProduct(ProductUpdateRequest request, Long productId) {
-        Product existingProduct = productRepository.findById(productId)
+        return productRepository.findById(productId)
+                .map(existingProduct -> updateExistingProduct(existingProduct, request))
+                .map(productRepository::save)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+    }
 
+    private Product updateExistingProduct(Product existingProduct, ProductUpdateRequest request) {
         existingProduct.setName(request.getName());
         existingProduct.setBrand(request.getBrand());
         existingProduct.setPrice(request.getPrice());
         existingProduct.setInventory(request.getInventory());
         existingProduct.setDescription(request.getDescription());
 
-        if (request.getCategory() != null && request.getCategory().getName() != null) {
-            Category category = categoryRepository.findByName(request.getCategory().getName());
-            if (category == null) {
-                category = new Category(request.getCategory().getName());
-                category = categoryRepository.save(category);
-            }
-            existingProduct.setCategory(category);
-        }
+        Optional.ofNullable(request.getCategory())
+                .map(Category::getName)
+                .map(this::getOrCreateCategory)
+                .ifPresent(existingProduct::setCategory);
 
-        return productRepository.save(existingProduct);
+        return existingProduct;
+    }
+
+    private Category getOrCreateCategory(String categoryName) {
+        return Optional.ofNullable(categoryRepository.findByName(categoryName))
+                .orElseGet(() -> categoryRepository.save(new Category(categoryName)));
     }
 
     @Override
@@ -111,5 +122,22 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Long countProductByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand, name);
+    }
+
+    @Override
+    public ProductDto convertToDto(Product product) {
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        if (product.getImages() != null) {
+            List<ImageDto> imageDtos = product.getImages().stream()
+                    .map(image -> modelMapper.map(image, ImageDto.class))
+                    .toList();
+            productDto.setImages(imageDtos);
+        }
+        return productDto;
+    }
+
+    @Override
+    public List<ProductDto> getConvertedProducts(List<Product> products) {
+        return products.stream().map(this::convertToDto).toList();
     }
 }
