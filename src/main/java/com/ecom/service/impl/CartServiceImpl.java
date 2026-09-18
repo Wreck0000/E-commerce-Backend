@@ -5,13 +5,10 @@ import com.ecom.model.Cart;
 import com.ecom.repository.CartItemRepository;
 import com.ecom.repository.CartRepository;
 import com.ecom.service.ICartService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-
-import static java.util.Arrays.stream;
 
 @Service
 @RequiredArgsConstructor
