@@ -508,6 +508,161 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Initialize Cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/carts/initialize",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carts",
+								"initialize"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Cart",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/carts/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carts",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Total Price",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/carts/1/total-price",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carts",
+								"1",
+								"total-price"
+							]
+						}
+					}
+				},
+				{
+					"name": "Clear Cart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/carts/1/clear",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carts",
+								"1",
+								"clear"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Cart Items",
+			"item": [
+				{
+					"name": "Add Item to Cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/cartItems/item/add?cartId=1&productId=1&quantity=2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cartItems",
+								"item",
+								"add"
+							],
+							"query": [
+								{
+									"key": "cartId",
+									"value": "1",
+									"description": "Optional: omit to auto-create a new cart"
+								},
+								{
+									"key": "productId",
+									"value": "1"
+								},
+								{
+									"key": "quantity",
+									"value": "2"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Item Quantity",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/cartItems/1/item/1/quantity/5/update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cartItems",
+								"1",
+								"item",
+								"1",
+								"quantity",
+								"5",
+								"update"
+							]
+						}
+					}
+				},
+				{
+					"name": "Remove Item from Cart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/cartItems/1/item/1/remove",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"cartItems",
+								"1",
+								"item",
+								"1",
+								"remove"
+							]
+						}
+					}
+				}
+			]
 		}
 	]
 }

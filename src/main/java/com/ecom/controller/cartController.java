@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RequiredArgsConstructor
@@ -18,6 +19,15 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class cartController {
     private final ICartService cartService;
 
+    @PostMapping("/initialize")
+    public ResponseEntity<ApiResponse> initializeCart() {
+        try {
+            Long cartId = cartService.initializeNewCart();
+            return ResponseEntity.ok(new ApiResponse("Cart initialized successfully!", cartId));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
 
     @GetMapping("/{cartId}")
     public ResponseEntity<ApiResponse> getCart(@PathVariable Long cartId) {
