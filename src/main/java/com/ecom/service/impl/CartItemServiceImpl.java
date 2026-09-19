@@ -11,6 +11,10 @@ import com.ecom.service.ICartService;
 import com.ecom.service.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+
 @RequiredArgsConstructor
 @Service
 public class CartItemServiceImpl implements ICartItemService {
@@ -19,6 +23,7 @@ public class CartItemServiceImpl implements ICartItemService {
     private final ICartService cartService;
     private final CartRepository cartRepository;
 
+    @Transactional
     @Override
     public void addItemToCart(Long cartId, Long productId, int quantity) {
         // 1. Fetch Cart and Product
@@ -52,25 +57,37 @@ public class CartItemServiceImpl implements ICartItemService {
         cartRepository.save(cart);
     }
 
+    @Transactional
     @Override
     public void removeItemFromCart(Long cartId, Long productId) {
         Cart cart = cartService.getCart(cartId);
-        CartItem itemToRemove=cart.getItems()
+        CartItem itemToRemove = cart.getItems()
                 .stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
-                .findFirst().orElseThrow(()->new ResourceNotFoundException("Not Present"));
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found in cart"));
         cart.removeItem(itemToRemove);
         cartRepository.save(cart);
     }
 
+    @Transactional
     @Override
     public void updateItemFromCart(Long cartId, Long productId, int quantity) {
         Cart cart = cartService.getCart(cartId);
         cart.getItems().stream()
-                .filter(item -> item.getProduct().getId().equals(productId)).findFirst()
-                .ifPresent(item->{
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .findFirst()
+                .ifPresentOrElse(item -> {
                     item.setQuantity(quantity);
                     item.setUnitPrice(item.getProduct().getPrice());
                     item.setTotalPrice();
-                });}
+                }, () -> {
+                    throw new ResourceNotFoundException("Product not found in cart");
+                });
+        BigDecimal totalAmount = cart.getItems().stream()
+                .map(CartItem::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        cart.setTotalAmount(totalAmount);
+        cartRepository.save(cart);
+    }
 }
