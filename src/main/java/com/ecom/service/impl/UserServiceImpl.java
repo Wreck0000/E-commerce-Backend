@@ -2,6 +2,7 @@ package com.ecom.service.impl;
 
 import com.ecom.dto.UserDto;
 import com.ecom.exception.ResourceNotFoundException;
+import com.ecom.model.Cart;
 import com.ecom.model.User;
 import com.ecom.repository.UserRepository;
 import com.ecom.request.CreateUserRequest;
@@ -29,6 +30,9 @@ public class UserServiceImpl implements IUserService {
             throw new ResourceNotFoundException("Email already exists");
         }
         User user =new User();
+        Cart cart = new Cart();
+        cart.setUser(user);
+        user.setCart(cart);
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
         user.setFirstName(request.getFirstName());
