@@ -41,4 +41,9 @@ public class CartServiceImpl implements ICartService {
         Cart newCart = new Cart();
         return cartRepository.save(newCart).getId();
     }
+
+    @Override
+    public Cart getCartByUserId(Long userId) {
+        return cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
+    }
 }
