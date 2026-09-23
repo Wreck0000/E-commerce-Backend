@@ -6,7 +6,7 @@
 [![Swagger](https://img.shields.io/badge/OpenAPI_3-Swagger_UI-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)](http://localhost:9090/swagger-ui.html)
 [![Maven](https://img.shields.io/badge/Build-Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)](https://maven.apache.org/)
 
-A robust, enterprise-ready RESTful e-commerce backend built with **Spring Boot** and **PostgreSQL**. Designed with clean layered architecture, defensive domain modeling, transactional checkout flows, and decoupled Data Transfer Objects (DTOs) to eliminate circular serialization issues.
+A RESTful e-commerce backend service built with **Spring Boot** and **PostgreSQL**, focusing on clean layered architecture, relational domain modeling, transactional order processing, and decoupled Data Transfer Objects (DTOs).
 
 ---
 
@@ -24,7 +24,7 @@ A robust, enterprise-ready RESTful e-commerce backend built with **Spring Boot**
 - [Project Structure](#project-structure)
 - [How to Run](#how-to-run)
 - [Example Requests](#example-requests)
-- [Future Improvements](#future-improvements)
+- [Roadmap & Engineering Improvements](#roadmap--engineering-improvements)
 
 ---
 
@@ -45,7 +45,7 @@ A robust, enterprise-ready RESTful e-commerce backend built with **Spring Boot**
 
 ### System Component Diagram
 
-The backend is structured according to a **Decoupled Layered Domain-Driven Architecture**:
+The backend follows a layered architecture with clear separation of concerns across controllers, business services, DTO mapping, and data access repositories:
 
 ```mermaid
 flowchart TD
@@ -169,9 +169,9 @@ sequenceDiagram
 ---
 
 ### Architectural Highlights
-- **Decoupled Contracts**: Domain entities (`Product`, `Cart`, `User`) are never leaked directly across public endpoints; responses are mapped to dedicated DTOs to avoid circular reference loops and over-fetching.
-- **Atomic Operations**: Critical multi-table workflows (such as placing an order, deducting stock, and clearing carts) are wrapped inside `@Transactional` boundaries to guarantee ACID compliance.
-- **Defensive Modeling**: Business logic such as calculating cart totals and updating item sub-totals is encapsulated within domain models (`Cart.updateTotalAmount()`).
+- **Decoupled API Contracts**: Domain entities (`Product`, `Cart`, `User`) are mapped to dedicated response DTOs using `ModelMapper` to prevent circular serialization references and keep external API contracts separate from internal database representations.
+- **Atomic Operations**: Multi-table checkout workflows (updating stock, clearing cart items, and persisting order line items) are wrapped inside `@Transactional` boundaries to guarantee ACID consistency.
+- **Domain Logic Encapsulation**: Cart monetary calculations and line-item aggregation are handled directly within domain helper methods (`Cart.updateTotalAmount()`).
 
 ---
 
@@ -180,11 +180,11 @@ sequenceDiagram
 | Component | Technology | Purpose / Justification |
 | :--- | :--- | :--- |
 | **Language** | Java 17 (LTS) | Modern Java features, records, streams, enhanced pattern matching |
-| **Framework** | Spring Boot 4.1.1 | Rapid application bootstrap, IoC container, and enterprise features |
+| **Framework** | Spring Boot 4.1.1 | Application bootstrap, IoC dependency injection, and Web MVC |
 | **Persistence** | Spring Data JPA / Hibernate | Object-Relational Mapping (ORM) and declarative repository queries |
 | **Database** | PostgreSQL | Robust ACID-compliant relational persistence |
 | **API Documentation** | SpringDoc OpenAPI 3 (Swagger UI) | Automated, interactive REST API testing interface |
-| **Object Mapping** | ModelMapper 3.2.4 | Automated, clean mapping between JPA entities and DTOs |
+| **Object Mapping** | ModelMapper 3.2.4 | Automated mapping between JPA entities and response DTOs |
 | **Boilerplate Reduction** | Project Lombok | Clean models with auto-generated getters, setters, and constructors |
 | **Build Tool** | Apache Maven | Deterministic build lifecycle and dependency management |
 
@@ -493,12 +493,14 @@ curl -X POST "http://localhost:9090/api/v1/orders/order?userId=1"
 
 ---
 
-## Future Improvements
+## Roadmap & Engineering Improvements
 
-- [ ] **Concurrency & Flash-Sale Protection**: Implement Optimistic Locking (`@Version`) and Pessimistic Locking (`SELECT FOR UPDATE`) on inventory to prevent overselling during high-concurrency checkouts.
+- [ ] **Authentication & Access Control**: Implement Spring Security with stateless JWT authentication, password hashing (`BCrypt`), and role-based access control (`ROLE_USER`, `ROLE_ADMIN`).
+- [ ] **Automated Testing Suite**: Build unit and integration test coverage using **JUnit 5**, **Mockito**, and **Testcontainers** with PostgreSQL.
+- [ ] **Concurrency & Flash-Sale Protection**: Implement Optimistic Locking (`@Version`) and inventory stock validation to prevent overselling during concurrent checkouts.
 - [ ] **Redis Caching Layer**: Implement the Cache-Aside pattern on product lookups and catalog queries to reduce PostgreSQL read latency.
 - [ ] **Event-Driven Architecture**: Decouple post-checkout workflows (email confirmation, invoice generation, inventory sync) using Spring `@Async` events and **RabbitMQ / Apache Kafka**.
 - [ ] **Real-Time Customer Support**: Bidirectional customer support chat and live order tracking via **Spring WebSockets & STOMP protocol**.
 - [ ] **Third-Party Payment Gateway**: Integrate Stripe / Razorpay webhooks with cryptographic HMAC signature verification and idempotency keys.
 - [ ] **Database Migration Versioning**: Migrate schema evolution from `hibernate.ddl-auto=update` to versioned **Flyway** migration scripts.
-- [ ] **Containerization & Orchestration**: Containerize the Spring Boot application, PostgreSQL, and Redis cache via a multi-stage `Dockerfile` and `docker-compose.yml`.
+- [ ] **Containerization & CI/CD**: Multi-stage `Dockerfile`, `docker-compose.yml` for local orchestration, and GitHub Actions CI workflow for automated testing.
