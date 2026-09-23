@@ -47,16 +47,15 @@ public class UserServiceImpl implements IUserService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         return userRepository.save(user);
-
     }
 
     @Override
-    public void deleteUser(Long UserId) {
-        userRepository.findById(UserId).ifPresentOrElse(
-                userRepository::delete,
-                ()->{throw new  ResourceNotFoundException("User not found");}
-        );
+    public void deleteUser(Long id) {
+        userRepository.findById(id).ifPresentOrElse(userRepository::delete,()->{
+            throw new ResourceNotFoundException("User not found");
+        });
     }
+
     @Override
     public UserDto convertToUserDto(User user) {
         return modelMapper.map(user, UserDto.class);
