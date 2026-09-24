@@ -97,7 +97,7 @@ flowchart TD
         end
     end
 
-    Clients -->|HTTP / REST (JSON & Multipart)| WebLayer
+    Clients -->|"HTTP / REST (JSON & Multipart)"| WebLayer
     WebLayer --> RespEnvelope
     WebLayer --> ExHandler
     WebLayer -->|DTO Requests| ServiceLayer
