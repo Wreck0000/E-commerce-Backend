@@ -9,6 +9,7 @@ import com.ecom.request.CreateUserRequest;
 import com.ecom.request.UserUpdateRequest;
 import com.ecom.service.IUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
     @Override
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("User not found"));
@@ -34,7 +36,7 @@ public class UserServiceImpl implements IUserService {
         cart.setUser(user);
         user.setCart(cart);
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         userRepository.save(user);
