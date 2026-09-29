@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 @Getter
 @Setter
@@ -37,5 +39,8 @@ public class User {
         this.email=Email;
         this.password=Password;
     }
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name="user_roles",joinColumns=@JoinColumn(name="user_id",referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name="role_id",referencedColumnName = "id"))
+    private Collection<Role> roles=new HashSet<>();
 
 }

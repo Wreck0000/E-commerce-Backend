@@ -1,8 +1,7 @@
-package com.ecom.security;
+package com.ecom.security.user;
 
 import com.ecom.model.User;
 import com.ecom.repository.UserRepository;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +15,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user=userRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("User not found"));
-        return new CustomUserDetails(user);
+        return CustomUserDetails.buildUserDetails(user);
     }
 }

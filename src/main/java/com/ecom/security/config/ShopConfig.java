@@ -1,4 +1,4 @@
-package com.ecom.config;
+package com.ecom.security.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
