@@ -41,32 +41,15 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
-            // STEP 1: Extract the raw JWT token string from the request's "Authorization" header
-            String jwt = parseJwt(request);
-
-            // STEP 2: Check if token exists AND if its signature + expiry date are valid
-            if (StringUtils.hasText(jwt) && jwtUtils.validateToken(jwt)) {
-
-                // STEP 3: Read the user's email/username embedded inside the token payload
-                String username = jwtUtils.getUsernameFromToken(jwt);
-
-                // STEP 4: Fetch the user and their assigned roles (authorities) from the database
-                UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
-
-                // STEP 5: Create Spring Security's official "Authenticated Badge" containing the user and roles
-                // We pass null for password/credentials because they are already authenticated via JWT
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
-                        );
-
-                // Attach request-specific metadata (like client IP address) to the badge
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                // STEP 6: Store the badge into Spring's SecurityContext for the duration of this request.
-                // Now Spring Security knows: "This request is from a verified user with these roles."
+            String jwt=parseJwt(request);
+            if(StringUtils.hasText(jwt)&&jwtUtils.validateToken(jwt)){
+                String username= jwtUtils.getUsernameFromToken(jwt);
+                UserDetails userDetails=customUserDetailsService.loadUserByUsername(username);
+                UsernamePasswordAuthenticationToken authentication=new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
