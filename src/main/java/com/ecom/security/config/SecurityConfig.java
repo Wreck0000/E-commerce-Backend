@@ -34,7 +34,6 @@ public class SecurityConfig{
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint))
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(org.springframework.security.config.Customizer.withDefaults())
                 .authorizeHttpRequests(auth->auth
                         .requestMatchers("/api/v1/users/add","/api/v1/auth/**").permitAll()
                         // Allow anyone to view products, categories, and images
@@ -64,5 +63,4 @@ public class SecurityConfig{
         return authConfig.getAuthenticationManager();
     }
 }
-
 
