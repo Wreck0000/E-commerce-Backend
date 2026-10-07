@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/cartItems")
+@RequestMapping("${api.prefix}/cartItems")
 public class CartItemController {
     private final ICartItemService cartItemService;
     private final ICartService cartService;
@@ -75,3 +75,4 @@ public class CartItemController {
         }
     }
 }
+
