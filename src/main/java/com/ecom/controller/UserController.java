@@ -33,7 +33,6 @@ public class UserController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
     }
-
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> createUser(@RequestBody CreateUserRequest request) {
         try {
@@ -72,3 +71,4 @@ public class UserController {
         }
     }
 }
+

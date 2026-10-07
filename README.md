@@ -3,7 +3,6 @@
 [![Java](https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.1.1-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Swagger](https://img.shields.io/badge/OpenAPI_3-Swagger_UI-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)](http://localhost:8080/swagger-ui.html)
 [![Maven](https://img.shields.io/badge/Build-Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)](https://maven.apache.org/)
 
 A RESTful e-commerce backend platform built with **Spring Boot** and **PostgreSQL**, focusing on catalog management, shopping cart operations, transactional order processing, image persistence, and OpenAPI documentation.
@@ -32,7 +31,6 @@ flowchart LR
 - **DTO Projection Layer**: Decoupled domain models using `ModelMapper` and response DTOs (`ProductDto`, `ImageDto`, `UserDto`).
 - **Standardized API Envelope**: Uniform `ApiResponse<T>` payload format across all endpoints.
 - **Global Exception Handling**: Centralized exception handling (`ResourceNotFoundException`, `AlreadyExistsException`) with clean error payloads.
-- **Interactive Documentation**: Swagger UI / OpenAPI 3 for exploring and testing endpoints.
 
 ---
 
@@ -45,7 +43,6 @@ flowchart LR
 | **Security** | Spring Security | Authentication & security foundation |
 | **Persistence** | Spring Data JPA / Hibernate | Object-Relational Mapping & repositories |
 | **Database** | PostgreSQL | Relational database storage |
-| **API Docs** | SpringDoc OpenAPI 3 (Swagger) | Interactive REST API testing interface |
 | **Mapping** | ModelMapper 3.2.4 | Entity-to-DTO transformation |
 | **Build Tool** | Apache Maven | Dependency and build lifecycle management |
 
@@ -134,8 +131,8 @@ spring.datasource.password=your_password
 
 The server starts at `http://localhost:8080`.
 
-### 4. Interactive Swagger Documentation
-Open your browser and navigate to:
-```text
-http://localhost:8080/swagger-ui.html
-```
+### 4. Testing with Postman
+A Postman collection is included in the root directory (`E-com.postman_collection.json`). Import this file into Postman to easily test all available API endpoints.
+
+
+
